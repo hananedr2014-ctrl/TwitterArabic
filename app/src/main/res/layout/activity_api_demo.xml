@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/white">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="عرض توضيحي للـ APIs"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/twitter_blue"
+        android:layout_marginBottom="24dp" />
+
+    <EditText
+        android:id="@+id/cityEditText"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint="أدخل اسم المدينة"
+        android:padding="12dp"
+        android:background="@drawable/edit_text_background"
+        android:layout_marginBottom="12dp"
+        android:textAlignment="textEnd" />
+
+    <Button
+        android:id="@+id/getWeatherButton"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="🌤️ الحصول على الطقس"
+        android:layout_marginBottom="12dp"
+        android:backgroundTint="@color/twitter_blue" />
+
+    <Button
+        android:id="@+id/getLocationButton"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="📍 تحديد الموقع الجغرافي"
+        android:layout_marginBottom="12dp"
+        android:backgroundTint="@color/twitter_blue" />
+
+    <Button
+        android:id="@+id/getExchangeButton"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="💱 أسعار الصرف"
+        android:layout_marginBottom="24dp"
+        android:backgroundTint="@color/twitter_blue" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="النتائج:"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="12dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/resultTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="اضغط على أي زر لعرض النتائج"
+            android:textSize="14sp"
+            android:textColor="@color/gray"
+            android:padding="12dp"
+            android:background="@drawable/edit_text_background" />
+
+    </ScrollView>
+
+</LinearLayout>
