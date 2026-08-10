@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/white">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="الساعة الرقمية"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="@color/twitter_blue"
+        android:layout_marginBottom="24dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:background="@drawable/edit_text_background"
+        android:layout_marginBottom="12dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="الوقت الحالي"
+            android:textSize="16sp"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/mainClockTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:00:00"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/twitter_blue" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:background="@drawable/edit_text_background"
+        android:layout_marginBottom="12dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="🇬🇧 لندن (GMT)"
+            android:textSize="16sp"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/londonClockTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:00:00"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/twitter_blue" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:background="@drawable/edit_text_background"
+        android:layout_marginBottom="12dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="🇯🇵 طوكيو (JST)"
+            android:textSize="16sp"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/tokyoClockTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:00:00"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/twitter_blue" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:background="@drawable/edit_text_background"
+        android:layout_marginBottom="12dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="🇦🇪 دبي (GST)"
+            android:textSize="16sp"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/dubaiClockTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:00:00"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/twitter_blue" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:background="@drawable/edit_text_background"
+        android:layout_marginBottom="12dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="🇺🇸 نيويورك (EST)"
+            android:textSize="16sp"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/newyorkClockTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:00:00"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/twitter_blue" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:background="@drawable/edit_text_background"
+        android:layout_marginBottom="12dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="🇦🇺 سيدني (AEDT)"
+            android:textSize="16sp"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/sydneyClockTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:00:00"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/twitter_blue" />
+
+    </LinearLayout>
+
+</LinearLayout>
