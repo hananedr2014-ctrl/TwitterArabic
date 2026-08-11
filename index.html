@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق التواصل - حسابات حقيقية</title>
+    <style>
+        * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
+        body { background-color: #f0f2f5; margin: 0; padding: 20px; color: #1c1e21; }
+        .container { max-width: 800px; margin: 0 auto; background: #ffffff; padding: 25px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .hidden { display: none !important; }
+        .form-group { margin-bottom: 15px; }
+        input, button { padding: 12px; width: 100%; border-radius: 6px; border: 1px solid #ccc; margin-top: 6px; font-size: 15px; }
+        button { background-color: #0084ff; color: white; border: none; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        button:hover { background-color: #006bce; }
+        .btn-danger { background-color: #dc3545; }
+        .btn-danger:hover { background-color: #bd2130; }
+        .chat-box { border: 1px solid #e5e5e5; height: 280px; overflow-y: auto; padding: 12px; margin-bottom: 12px; background: #f9f9f9; border-radius: 6px; }
+        .message { margin-bottom: 10px; padding: 8px 14px; border-radius: 15px; width: fit-content; max-width: 75%; font-size: 14px; line-height: 1.4; }
+        .me { background-color: #0084ff; color: white; margin-left: auto; border-bottom-left-radius: 2px; }
+        .other { background-color: #e4e6eb; color: #050505; border-bottom-right-radius: 2px; }
+        .user-card { padding: 12px; border: 1px solid #eee; margin-bottom: 8px; border-radius: 6px; cursor: pointer; transition: 0.2s; }
+        .user-card:hover { background-color: #eef5ff; border-color: #0084ff; }
+        a { color: #0084ff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>نظام التواصل بالحسابات الحقيقية</h2>
+        
+        <!-- قسم المصادقة (تسجيل الدخول / إنشاء حساب) -->
+        <div id="authSection">
+            <div id="loginForm">
+                <h3>تسجيل الدخول</h3>
+                <div class="form-group"><input type="email" id="loginEmail" placeholder="البريد الإلكتروني"></div>
+                <div class="form-group"><input type="password" id="loginPassword" placeholder="كلمة المرور"></div>
+                <button onclick="login()">دخول</button>
+                <p>ليس لديك حساب؟ <a href="#" onclick="toggleAuth(true)">إنشاء حساب جديد</a></p>
+            </div>
+
+            <div id="registerForm" class="hidden">
+                <h3>إنشاء حساب جديد</h3>
+                <div class="form-group"><input type="text" id="regName" placeholder="الاسم الكامل"></div>
+                <div class="form-group"><input type="email" id="regEmail" placeholder="البريد الإلكتروني"></div>
+                <div class="form-group"><input type="password" id="regPassword" placeholder="كلمة المرور"></div>
+                <button onclick="register()">تسجيل حساب</button>
+                <p>لديك حساب بالفعل؟ <a href="#" onclick="toggleAuth(false)">تسجيل الدخول</a></p>
+            </div>
+        </div>
+
+        <!-- قسم التطبيق بعد تسجيل الدخول -->
+        <div id="appSection" class="hidden">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h3>مرحباً: <span id="currentUser"></span></h3>
+                <button onclick="logout()" class="btn-danger" style="width: auto;">تسجيل الخروج</button>
+            </div>
+            <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
+            
+            <div style="display: flex; gap: 20px;">
+                <div style="width: 40%;">
+                    <h4>المستخدمين المسجلين:</h4>
+                    <div id="usersList"></div>
+                </div>
+                <div style="width: 60%;">
+                    <h4 id="chatTitle">اختر حساباً للبدء بالمراسلة</h4>
+                    <div id="chatArea" class="hidden">
+                        <div id="chatBox" class="chat-box"></div>
+                        <input type="text" id="msgInput" placeholder="اكتب رسالتك...">
+                        <button onclick="sendMessage()" style="margin-top: 8px;">إرسال</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // =========================================================
+        // 🔗 قم بتعديل رابط خادم الموقع الخاص بك هنا:
+        // =========================================================
+        const API_URL = "https://YOUR-BACKEND-URL.onrender.com"; 
+
+        let currentUserId = null;
+        let selectedUserId = null;
+
+        function toggleAuth(showReg) {
+            document.getElementById('loginForm').classList.toggle('hidden', showReg);
+            document.getElementById('registerForm').classList.toggle('hidden', !showReg);
+        }
+
+        async function register() {
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+
+            const res = await fetch(`${API_URL}/api/auth/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, password })
+            });
+            const data = await res.json();
+            if (res.ok) { 
+                localStorage.setItem('token', data.token); 
+                initApp(); 
+            } else { 
+                alert(data.error); 
+            }
+        }
+
+        async function login() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            const res = await fetch(`${API_URL}/api/auth/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+            const data = await res.json();
+            if (res.ok) { 
+                localStorage.setItem('token', data.token); 
+                initApp(); 
+            } else { 
+                alert(data.error); 
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            location.reload();
+        }
+
+        async function initApp() {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+
+            const res = await fetch(`${API_URL}/api/auth/me`, {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            if (!res.ok) return logout();
+
+            const data = await res.json();
+            currentUserId = data.user.id;
+            document.getElementById('currentUser').innerText = data.user.name;
+            document.getElementById('authSection').classList.add('hidden');
+            document.getElementById('appSection').classList.remove('hidden');
+            loadUsers();
+        }
+
+        async function loadUsers() {
+            const token = localStorage.getItem('token');
+            const res = await fetch(`${API_URL}/api/users`, {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            const data = await res.json();
+            const listDiv = document.getElementById('usersList');
+            listDiv.innerHTML = '';
+            data.users.forEach(u => {
+                const div = document.createElement('div');
+                div.className = 'user-card';
+                div.innerHTML = `<strong>${u.name}</strong><br><small style="color:#666">${u.email}</small>`;
+                div.onclick = () => selectUser(u.id, u.name);
+                listDiv.appendChild(div);
+            });
+        }
+
+        async function selectUser(id, name) {
+            selectedUserId = id;
+            document.getElementById('chatTitle').innerText = 'المحادثة مع: ' + name;
+            document.getElementById('chatArea').classList.remove('hidden');
+            loadMessages();
+        }
+
+        async function loadMessages() {
+            if (!selectedUserId) return;
+            const token = localStorage.getItem('token');
+            const res = await fetch(`${API_URL}/api/messages/${selectedUserId}`, {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            const data = await res.json();
+            const chatBox = document.getElementById('chatBox');
+            chatBox.innerHTML = '';
+            data.messages.forEach(m => {
+                const div = document.createElement('div');
+                div.className = 'message ' + (m.sender_id === currentUserId ? 'me' : 'other');
+                div.innerText = m.content;
+                chatBox.appendChild(div);
+            });
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('msgInput');
+            const content = input.value.trim();
+            if (!content || !selectedUserId) return;
+
+            const token = localStorage.getItem('token');
+            await fetch(`${API_URL}/api/messages/send`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+                body: JSON.stringify({ receiver_id: selectedUserId, content })
+            });
+            input.value = '';
+            loadMessages();
+        }
+
+        initApp();
+    </script>
+</body>
+</html>
